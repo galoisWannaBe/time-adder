@@ -1,4 +1,6 @@
 import java.awt.BorderLayout
+import java.awt.BorderLayout.CENTER
+import java.awt.Component
 import java.awt.EventQueue
 import java.awt.GridLayout
 import java.util.*
@@ -8,6 +10,22 @@ import kotlin.collections.ArrayList
 class slippageFinderUI(title: String) : JFrame() {
 
     val slips = slippageFinder()
+    val startText = JTextField()
+    val endText = JTextField()
+    val checkBreak1 = JCheckBox()
+    val checkLunch = JCheckBox()
+    val checkBreak2 = JCheckBox()
+    val labelNew = JTextField()
+    val timeNew = JTextField()
+    val durationNew = JTextField()
+    val eventsTable = JTable()
+
+    val rightPanel = JPanel()
+    val leftPanel = JPanel()
+
+    val leftTop = JPanel()
+    val leftJustLeft = JPanel()
+    val leftBottom = JPanel()
 
     init{createUI(title)
         isVisible = true}
@@ -19,36 +37,46 @@ class slippageFinderUI(title: String) : JFrame() {
         setLocationRelativeTo(null)
         isVisible = true
 
-        val controls = JPanel()
-        val eventsList = JPanel()
+        createLayout()
 
-        controls.layout = GridLayout(2,1)
-
-        val selectEvents = JPanel()
-        //selectEvents.layout = GroupLayout()
-
-        val addNewEvent = JPanel()
-        addNewEvent.layout = GridLayout()
-
-        val eventLabel = JTextField()
-        val eventTime = JTextField()
-        val eventDuration = JTextField()
-
-        eventTime.addActionListener {
-            slips.listedEvents.add(event(eventLabel.text, eventTime.text))
-        }
-        eventDuration.addActionListener {
-            slips.listedEvents.add(event(eventLabel.text, eventTime.text, eventDuration.text))
-        }
-
-        addNewEvent.add(eventLabel)
-        addNewEvent.add(eventTime)
-        addNewEvent.add(eventDuration)
-
-        eventsList.layout = BorderLayout()
-
+    }
+    private fun createLayout(){
         layout = GridLayout(1,2)
-        add(controls)
-        add(eventsList)
+        createTable()
+        createBigLeft()
+        add(leftPanel)
+        add(rightPanel)
+    }
+    private fun createTable(){
+        //right side of layout
+        rightPanel.layout = BorderLayout()
+        rightPanel.add(eventsTable, CENTER)
+    }
+    private fun createBigLeft(){
+        //left side of layout
+        leftPanel.layout = GridLayout(3,1)
+        createSetTOD()
+        createSelectExisting()
+        createNewEvents()
+        leftPanel.add(leftTop)
+        leftPanel.add(leftJustLeft)
+        leftPanel.add(leftBottom)
+    }
+    private fun createSetTOD(){
+        //top left; choose/enter start and end time
+        leftTop.add(startText)
+        leftTop.add(endText)
+    }
+    private fun createSelectExisting(){
+        //checkboxes for both breaks and lunches
+        leftJustLeft.add(checkBreak1)
+        leftJustLeft.add(checkLunch)
+        leftJustLeft.add(checkBreak2)
+    }
+    private fun createNewEvents(){
+        //bottom left; Enter new events
+        leftBottom.add(labelNew)
+        leftBottom.add(timeNew)
+        leftBottom.add(durationNew)
     }
 }
