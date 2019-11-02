@@ -15,6 +15,10 @@ class AddTime {
     var operatorIndex = 0
     var isAdded = true
     var answer = "Hello"
+    var operator = "+"
+    var count0 = 0
+    var count1 = 0
+    var containsSpace = false
 
     fun parseOp(MathIn: String){
 
@@ -89,5 +93,70 @@ class AddTime {
             }
         }
         answer = hours.toString().plus(":").plus(minutes.toString()).plus(":").plus(seconds.toString())
+    }
+    fun parseOp2(MathIn: String){
+        h0 = 0
+        h1 = 0
+        m0 = 0
+        m1 = 0
+        s0 = 0
+        s1 = 0
+        count0 = 0
+        count1 = 0
+        var temp = MathIn.replace(" ", "")
+        if(temp.contains("+")||temp.contains("-")){
+            operator = if (temp.contains("+")){
+                "+"
+            }else{
+                "-"
+            }
+            isAdded = operator == "+"
+            temp0 = temp.substringBefore(operator)
+            count0 = temp0.length
+            for (char in temp0){
+                if (char.equals(':')){
+                    count0--
+                }
+            }
+            temp1 = temp.substringAfter(operator)
+            count1 = temp1.length
+            for (char in temp1){
+                if (char.equals(':')){
+                    count1--
+                }
+            }
+            when (count0){
+                1 , 2 -> {
+                        s0 = temp.substringBefore(operator).toInt()
+                        println(temp.substringBefore(operator))
+                        }
+                3 , 4 -> {
+                    m0 = temp.substringBefore(":").toInt()
+                    temp0 = temp.substringAfter(":")
+                    s0 = temp0.substringBefore(operator).toInt()
+                }
+                5 , 6 -> {
+                    h0 = temp.substringBefore(":").toInt()
+                    m0 = temp.substringAfter(":").substringBefore(operator).substringBefore(":").toInt()
+                    s0 = temp.substringAfter(":").substringAfter(":").substringBefore(operator).toInt()
+                }
+            }
+            when (count1){
+                0 -> answer = "Invalid Operation"
+                1 , 2 -> s1 = temp.substringAfter(operator).toInt()
+                3 , 4 -> {
+                    s1 = temp.substringAfterLast(":").toInt()
+                    m1 = temp.substringAfter(operator).substringBefore(":").toInt()
+                }
+                5 , 6 -> {
+                    s1 = temp.substringAfterLast(":").toInt()
+                    m1 = temp.substringAfter(operator).substringAfter(":").substringBeforeLast(":").toInt()
+                    h1 = temp.substringAfter(operator).substringBefore(":").toInt()
+                }
+            }
+        }else{
+            answer = "Invalid Operation"
+        }
+        println("${h0.toString().plus(":").plus(m0.toString()).plus(":").plus(s0.toString())} $operator ${h1.toString().plus(":").plus(m1.toString()).plus(":").plus(s1.toString())}")
     }
 }

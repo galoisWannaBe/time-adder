@@ -10,8 +10,8 @@ class mainUI(title: String) : JFrame(){
 
 
 
-    private fun createUI(title: String) {
-        setTitle(title)
+    private fun createUI(Title: String) {
+        title = Title
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         setSize(1024, 720)
         setLocationRelativeTo(null)
@@ -25,14 +25,14 @@ class mainUI(title: String) : JFrame(){
         val answer = JTextField(10)
         btnCalc.addActionListener {
             val timeMath = AddTime()
-            var adding = calculation.text
-            timeMath.parseOp(adding)
+            var adding = calculation.text.toString()
+            timeMath.parseOp2(adding)
             timeMath.addingTime1()
             answer.text = timeMath.answer }
         calculation.addActionListener {
             val timeMath = AddTime()
-            var adding = calculation.text
-            timeMath.parseOp(adding)
+            var adding = calculation.text.toString()
+            timeMath.parseOp2(adding)
             timeMath.addingTime1()
             answer.text = timeMath.answer
         }

@@ -1,24 +1,26 @@
-import java.awt.BorderLayout
+import java.awt.*
 import java.awt.BorderLayout.CENTER
-import java.awt.Component
-import java.awt.EventQueue
-import java.awt.GridLayout
 import java.util.*
 import javax.swing.*
 import kotlin.collections.ArrayList
 
-class slippageFinderUI(title: String) : JFrame() {
+class slippageFinderUI(Title: String) : JFrame() {
 
     val slips = slippageFinder()
-    val startText = JTextField()
-    val endText = JTextField()
-    val checkBreak1 = JCheckBox()
-    val checkLunch = JCheckBox()
-    val checkBreak2 = JCheckBox()
-    val labelNew = JTextField()
-    val timeNew = JTextField()
-    val durationNew = JTextField()
-    val eventsTable = JTable()
+    val startText = JTextField(" 9:00", 5)
+    val endText = JTextField("17:30", 5)
+    val checkBreak1 = JCheckBox("Break 1")
+    val checkLunch = JCheckBox("Lunch")
+    val checkBreak2 = JCheckBox("Break 2")
+    val labelNew = JTextField(25)
+    val timeNew = JTextField(5)
+    val durationNew = JTextField(5)
+
+    val startLabel = JLabel("Start")
+    val endLabel = JLabel("End")
+    val labelLabel = JLabel("Label")
+    val timeLabel = JLabel("Time")
+    val durationLabel = JLabel("Duration")
 
     val rightPanel = JPanel()
     val leftPanel = JPanel()
@@ -27,11 +29,13 @@ class slippageFinderUI(title: String) : JFrame() {
     val leftJustLeft = JPanel()
     val leftBottom = JPanel()
 
-    init{createUI(title)
+    var arrList = ArrayList<Array<String>>()
+
+    init{createUI(Title)
         isVisible = true}
 
-    private fun createUI(title: String) {
-        setTitle(title)
+    private fun createUI(Title: String) {
+        title = Title
         defaultCloseOperation = JFrame.EXIT_ON_CLOSE
         setSize(1024, 720)
         setLocationRelativeTo(null)
@@ -49,8 +53,19 @@ class slippageFinderUI(title: String) : JFrame() {
     }
     private fun createTable(){
         //right side of layout
+        for (obj in slips.listedEvents){
+            arrList.add(arrayOf<String>(obj.Label, obj.TimeStr, obj.Duration))
+        }
+        var allArr = arrayOf(arrList[0])
+        for (i in 1 until arrList.size){
+            allArr = allArr.plus(arrList[i])
+        }
+        var columnNames = arrayOf<String>("Label", "Time", "Duration")
+        val eventsTable = JTable(allArr, columnNames)
+        val tablePane = JScrollPane()
+        tablePane.add(eventsTable)
         rightPanel.layout = BorderLayout()
-        rightPanel.add(eventsTable, CENTER)
+        rightPanel.add(tablePane, CENTER)
     }
     private fun createBigLeft(){
         //left side of layout
@@ -58,17 +73,28 @@ class slippageFinderUI(title: String) : JFrame() {
         createSetTOD()
         createSelectExisting()
         createNewEvents()
+        val topLeftPanelPanel = JPanel()
         leftPanel.add(leftTop)
         leftPanel.add(leftJustLeft)
         leftPanel.add(leftBottom)
     }
     private fun createSetTOD(){
         //top left; choose/enter start and end time
-        leftTop.add(startText)
-        leftTop.add(endText)
+        leftTop.layout = GridLayout(2,1)
+        val topTexts = JPanel()
+        val topLabels = JPanel()
+        topTexts.layout = FlowLayout()
+        topLabels.layout = FlowLayout()
+        topTexts.add(startText)
+        topTexts.add(endText)
+        leftTop.add(topTexts)
+        topLabels.add(startLabel)
+        topLabels.add(endLabel)
+        leftTop.add(topLabels)
     }
     private fun createSelectExisting(){
         //checkboxes for both breaks and lunches
+        leftJustLeft.layout = FlowLayout()
         leftJustLeft.add(checkBreak1)
         leftJustLeft.add(checkLunch)
         leftJustLeft.add(checkBreak2)
