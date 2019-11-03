@@ -69,8 +69,9 @@ class slippageFinderUI(Title: String) : JFrame() {
     }
     private fun createBigLeft(){
         //left side of layout
-        leftPanel.layout = GridLayout(3,1)
-        createSetTOD()
+        leftPanel.layout = GridLayout(3,1, 8, 16)
+        //Pick the function for laying out the TOD stuff
+        createSetTOD1()
         createSelectExisting()
         createNewEvents()
         val topLeftPanelPanel = JPanel()
@@ -78,7 +79,7 @@ class slippageFinderUI(Title: String) : JFrame() {
         leftPanel.add(leftJustLeft)
         leftPanel.add(leftBottom)
     }
-    private fun createSetTOD(){
+    private fun createSetTOD0(){
         //top left; choose/enter start and end time
         leftTop.layout = GridLayout(2,1)
         val topTexts = JPanel()
@@ -91,6 +92,10 @@ class slippageFinderUI(Title: String) : JFrame() {
         topLabels.add(startLabel)
         topLabels.add(endLabel)
         leftTop.add(topLabels)
+    }
+    private fun createSetTOD1(){
+        //top left; choose/enter start and end time
+        //copy and paste from createSetTOD0 for starting point
     }
     private fun createSelectExisting(){
         //checkboxes for both breaks and lunches
