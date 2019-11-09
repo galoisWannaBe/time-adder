@@ -1,4 +1,7 @@
-class AddTime {
+import kotlin.math.floor
+import kotlin.math.roundToInt
+
+object AddTime {
 
     var hours = 0
     var h0 = 0
@@ -34,67 +37,58 @@ class AddTime {
         m0 = temp0.subSequence(0, temp0.indexOf(":")).toString().toInt()
         temp0 = temp0.subSequence((temp0.indexOf(":"))+1, temp0.length).toString()
         s0 = temp0.toInt()
+        m0 += (h0 * 60)
+        s0 += (m0 * 60)
 
         h1 = temp1.subSequence(0, temp1.indexOf(":")).toString().toInt()
         temp1 = temp1.subSequence((temp1.indexOf(":"))+1, temp1.length).toString()
         m1 = temp1.subSequence(0, temp1.indexOf(":")).toString().toInt()
         temp1 = temp1.subSequence((temp1.indexOf(":"))+1, temp1.length).toString()
         s1 = temp1.toInt()
+        m1 += (h1 * 60)
+        s1 += (m1 * 60)
     }
     fun addingTime1() {
-
-        if(isAdded){
-            if(temp1.equals("default")){
-                hours += h0
-                minutes += m0
-                seconds += s0
-
-                }
-            else {
-                hours = h0 + h1
-                minutes = m0 + m1
-                seconds = s0 + s1
-            }
-            if (seconds >=60){
-                seconds -= 60
-                minutes ++
-            }
-            if (minutes >= 60){
-                minutes -= 60
-                hours ++
-            }
+        println("isAdded: $isAdded")
+        println("count0: $count0")
+        seconds = if (isAdded){
+            s0 + s1
+        } else{
+            s0 - s1
         }
-        if(!isAdded){
-            if(s0 >= seconds){
-                seconds += 60
-                minutes --
-            }
-            if(m0 >= minutes){
-                minutes += 60
-                hours --
-            }
-            if (temp1.equals("default")){
-                hours -= h0
-                minutes -= m0
-                seconds -= s0
-            }
-            else {
-                hours = h0 - h1
-                if(s1 > s0){
-                    m0 --
-                    s0 += 60
-                }
-                if(m1 > m0){
-                    hours --
-                    m0 += 60
-                }
-                seconds = s0 - s1
-                minutes = m0 - m1
-            }
+        println("Answer in seconds: $seconds")
+        minutes = floor(seconds.toDouble() / 60.0).toInt()
+        seconds %= 60
+        hours = floor(minutes.toDouble() / 60.0).toInt()
+        minutes %= 60
+
+        var hStr = ""
+        var mStr = ""
+        var sStr = ""
+
+        hStr = if(hours < 10){
+            "0".plus(hours.toString())
+        }else{
+            hours.toString()
         }
-        answer = hours.toString().plus(":").plus(minutes.toString()).plus(":").plus(seconds.toString())
+        mStr = if(minutes < 10){
+            "0".plus(minutes.toString())
+        }else{
+            minutes.toString()
+        }
+        sStr = if(seconds < 10){
+            "0".plus(seconds.toString())
+        }else{
+            seconds.toString().toString()
+        }
+
+        answer = hStr.plus(":").plus(mStr).plus(":").plus(sStr)
     }
     fun parseOp2(MathIn: String){
+        println("called parseOp")
+        println("Seconds was $seconds")
+        println("Minutes was $minutes")
+        println("Hours was $hours")
         h0 = 0
         h1 = 0
         m0 = 0
@@ -126,6 +120,12 @@ class AddTime {
                 }
             }
             when (count0){
+                0 -> {
+                    h0 = hours
+                    m0 = minutes
+                    s0 = seconds
+                    println("Prior answer in seconds")
+                }
                 1 , 2 -> {
                         s0 = temp.substringBefore(operator).toInt()
                         println(temp.substringBefore(operator))
@@ -158,5 +158,10 @@ class AddTime {
             answer = "Invalid Operation"
         }
         println("${h0.toString().plus(":").plus(m0.toString()).plus(":").plus(s0.toString())} $operator ${h1.toString().plus(":").plus(m1.toString()).plus(":").plus(s1.toString())}")
+        m0 += h0 * 60
+        s0 += m0 * 60
+        m1 += h1 * 60
+        s1 += m1 * 60
+        println("$s0 $operator $s1")
     }
 }

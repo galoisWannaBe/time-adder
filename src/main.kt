@@ -24,17 +24,16 @@ class mainUI(title: String) : JFrame(){
         val calculation = JTextField(25)
         val answer = JTextField(10)
         btnCalc.addActionListener {
-            val timeMath = AddTime()
             var adding = calculation.text.toString()
-            timeMath.parseOp2(adding)
-            timeMath.addingTime1()
-            answer.text = timeMath.answer }
+            AddTime.parseOp2(adding)
+            AddTime.addingTime1()
+            answer.text = AddTime.answer
+        }
         calculation.addActionListener {
-            val timeMath = AddTime()
             var adding = calculation.text.toString()
-            timeMath.parseOp2(adding)
-            timeMath.addingTime1()
-            answer.text = timeMath.answer
+            AddTime.parseOp2(adding)
+            AddTime.addingTime1()
+            answer.text = AddTime.answer
         }
         btnGoToSlip.addActionListener {
             EventQueue.invokeLater(::openSlips)
